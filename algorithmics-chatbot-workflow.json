@@ -1,0 +1,140 @@
+{
+    "name": "AlgoSchoolLanding - Chatbot Workflow",
+    "nodes": [
+      {
+        "parameters": {
+          "path": "chatbot",
+          "options": {}
+        },
+        "id": "Webhook1",
+        "name": "Webhook1",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 1,
+        "position": [
+          100,
+          300
+        ]
+      },
+      {
+        "parameters": {
+          "functionCode": "const chatInput = $json.body?.message || '';\n\n// Validamos entrada\nif (!chatInput.trim()) {\n  throw new Error('Mensaje vac\u00edo o no v\u00e1lido.');\n}\n\nreturn [{ json: { chatInput } }];"
+        },
+        "id": "Code",
+        "name": "Code",
+        "type": "n8n-nodes-base.function",
+        "typeVersion": 1,
+        "position": [
+          300,
+          300
+        ]
+      },
+      {
+        "parameters": {
+          "functionCode": "const knowledge = {\n  \"precio_por_hora\": \"$100 MXN por hora\",\n  \"paquete_4_horas\": \"$350 MXN por 4 horas (descuento incluido)\",\n  \"direccion\": \"Calle de la Innovaci\u00f3n 123, Ciudad Creativa, M\u00e9xico\",\n  \"horarios\": \"Lunes a Viernes, de 3:00 pm a 7:00 pm\",\n  \"modalidad\": \"Clases presenciales y por Zoom disponibles\",\n  \"contacto\": \"Puedes escribirnos a contacto@escainet.com o WhatsApp al +52 55 1234 5678\"\n};\n\nreturn [{ json: { knowledge } }];"
+        },
+        "id": "Knowledge",
+        "name": "Base de Conocimiento",
+        "type": "n8n-nodes-base.function",
+        "typeVersion": 1,
+        "position": [
+          300,
+          500
+        ]
+      },
+      {
+        "parameters": {
+          "mode": "mergeByIndex"
+        },
+        "id": "Merge",
+        "name": "Merge",
+        "type": "n8n-nodes-base.merge",
+        "typeVersion": 1,
+        "position": [
+          500,
+          400
+        ]
+      },
+      {
+        "parameters": {
+          "instructions": "Usa la siguiente base de conocimiento para responder de forma breve, clara y amable:\n\nBase de conocimiento:\n{{ JSON.stringify($json.knowledge, null, 2) }}\n\nPregunta del usuario: {{ $json.chatInput }}"
+        },
+        "id": "AI_Agent",
+        "name": "AI Agent",
+        "type": "n8n-nodes-base.aiAgent",
+        "typeVersion": 1,
+        "position": [
+          700,
+          400
+        ]
+      },
+      {
+        "parameters": {
+          "model": "gpt-4o-mini",
+          "temperature": 0.7
+        },
+        "id": "OpenAI",
+        "name": "OpenAI Chat Model",
+        "type": "n8n-nodes-base.openAi.chat",
+        "typeVersion": 1,
+        "position": [
+          700,
+          200
+        ]
+      },
+      {
+        "parameters": {},
+        "id": "RespondWebhook",
+        "name": "Respond to Webhook",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1,
+        "position": [
+          900,
+          400
+        ]
+      }
+    ],
+    "connections": {
+      "Webhook1": [
+        {
+          "node": "Code",
+          "type": "main",
+          "index": 0
+        }
+      ],
+      "Code": [
+        {
+          "node": "Merge",
+          "type": "main",
+          "index": 0
+        }
+      ],
+      "Base de Conocimiento": [
+        {
+          "node": "Merge",
+          "type": "main",
+          "index": 1
+        }
+      ],
+      "Merge": [
+        {
+          "node": "AI Agent",
+          "type": "main",
+          "index": 0
+        }
+      ],
+      "OpenAI Chat Model": [
+        {
+          "node": "AI Agent",
+          "type": "ai_languageModel",
+          "index": 0
+        }
+      ],
+      "AI Agent": [
+        {
+          "node": "Respond to Webhook",
+          "type": "main",
+          "index": 0
+        }
+      ]
+    }
+  }
