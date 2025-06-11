@@ -7,19 +7,18 @@ const ChatBotButton = () => {
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [isKeyboardOpen, setIsKeyboardOpen] = useState(false);
+
   const inputRef = useRef(null);
   const messagesEndRef = useRef(null);
+  const audioRef = useRef(null);
 
   const toggleChat = () => {
-    setIsOpen(!isOpen);
-    console.log('🟣 Chat toggled:', !isOpen ? 'opened' : 'closed');
-    setTimeout(() => {
-      inputRef.current?.focus();
-    }, 100);
+    setIsOpen(prev => !prev);
+    setTimeout(() => inputRef.current?.focus(), 100);
   };
 
   const scrollToBottom = () => {
-    console.log('📦 Scrolling to bottom');
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
@@ -27,18 +26,33 @@ const ChatBotButton = () => {
     scrollToBottom();
   }, [messages, isOpen]);
 
+  useEffect(() => {
+    audioRef.current = new Audio('/sounds/tok-tok.mp3');
+    audioRef.current.volume = 0.3;
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      const heightDiff = window.innerHeight < window.outerHeight - 100;
+      setIsKeyboardOpen(heightDiff);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const playSound = () => {
+    audioRef.current?.play().catch(err => console.warn('🔇 Error al reproducir sonido:', err));
+  };
+
   const sendMessage = async () => {
-    if (!input.trim()) {
-      console.warn('⚠️ Input vacío. No se envía nada.');
-      return;
-    }
+    if (!input.trim()) return;
 
-    const newUserMsg = { sender: 'user', text: input };
-    setMessages(prev => [...prev, newUserMsg]);
-    console.log('📤 Usuario envió mensaje:', input);
-
+    const userMessage = { sender: 'user', text: input };
+    setMessages(prev => [...prev, userMessage]);
     setInput('');
     setLoading(true);
+    scrollToBottom();
 
     try {
       const res = await fetch('https://algorithmicsaischool.app.n8n.cloud/webhook/chatbot', {
@@ -47,18 +61,15 @@ const ChatBotButton = () => {
         body: JSON.stringify({ message: input }),
       });
 
-      console.log('📬 Respuesta RAW del webhook:', res);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
       const data = await res.json();
-      console.log('✅ JSON recibido:', data);
+      const reply = data.response || data.output || 'Lo siento, no pude procesarlo.';
 
-      const botReply = data.response || data.output || 'Lo siento, no pude procesarlo.';
-      const newBotMsg = { sender: 'bot', text: botReply };
-
-      setMessages(prev => [...prev, newBotMsg]);
-
+      playSound();
+      setMessages(prev => [...prev, { sender: 'bot', text: reply }]);
+      scrollToBottom();
     } catch (err) {
-      console.error('❌ Error durante fetch:', err);
       setMessages(prev => [...prev, { sender: 'bot', text: '⚠️ Error al conectar con el servidor.' }]);
     } finally {
       setLoading(false);
@@ -67,7 +78,6 @@ const ChatBotButton = () => {
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
-      console.log('⌨️ Enter presionado. Enviando...');
       sendMessage();
     }
   };
@@ -80,11 +90,16 @@ const ChatBotButton = () => {
         className="fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full bg-black shadow-xl flex items-center justify-center group hover:scale-110 transition-transform duration-300 border border-gray-800 focus:outline-none"
       >
         <div className="absolute w-full h-full rounded-full animate-pulse bg-gradient-to-br from-purple-500 via-indigo-500 to-blue-500 opacity-30 blur-md"></div>
-        <span className="relative text-white text-2xl transition-transform group-hover:scale-125">🤖</span>
+        <span className="relative text-white text-2xl group-hover:scale-125 transition-transform">🤖</span>
       </button>
 
       {isOpen && (
-        <div className="fixed bottom-24 right-6 w-[360px] h-[500px] bg-zinc-900 border border-gray-800 rounded-2xl shadow-2xl z-50 flex flex-col overflow-hidden">
+        <div
+          className={`${
+            isKeyboardOpen ? 'absolute bottom-0' : 'fixed bottom-24'
+          } right-6 w-[360px] bg-zinc-900 border border-gray-800 rounded-2xl shadow-2xl z-50 flex flex-col overflow-hidden`} 
+          style={{ height: isKeyboardOpen ? '60vh' : '500px' }}
+        >
           <div className="flex items-center justify-between p-4 bg-gradient-to-r from-indigo-600 to-purple-700 text-white">
             <h2 className="text-sm font-semibold tracking-wide">AI Assistant</h2>
             <button
@@ -107,7 +122,11 @@ const ChatBotButton = () => {
                 {msg.text}
               </div>
             ))}
-            {loading && <div className="text-center text-gray-400 text-xs">Pensando...</div>}
+            {loading && (
+              <div className="text-center text-gray-400 text-xs animate-pulse">
+                Escribiendo<span className="dot-flash">...</span>
+              </div>
+            )}
             <div ref={messagesEndRef} />
           </div>
 

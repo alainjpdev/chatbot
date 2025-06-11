@@ -12,7 +12,7 @@ const Footer = () => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            escainet.com
+            Algorithmics AI
           </a>
         </p>
       </div>

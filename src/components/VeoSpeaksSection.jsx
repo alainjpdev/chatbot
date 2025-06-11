@@ -31,10 +31,10 @@ const VeoSpeaksSection = () => {
             <>
               <p>🎓 This summer, your kids can learn AI, build apps, and create chatbots!</p>
               <p>🚀 Enroll them in our <span className="text-purple-400 font-semibold">Artificial Intelligence Summer Camp</span>.</p>
-              <p>🕘 <strong>Open schedule:</strong> 9 AM to 6 PM – come anytime!</p>
+              <p>🕘 <strong>Open schedule:</strong> 10 AM to 6 PM – come anytime!</p>
               <p>💡 <strong>Flexible hours:</strong> purchase hour packages and use them whenever you want.</p>
-              <p>📍 Puerto Aventuras</p>
-              <p>📱 WhatsApp: +52 984 132 8770</p>
+              <p>📍 Puerto Aventuras Plaza Condominio Gourmet, Calle Punta Celis Manzana 24 Lote 1, Plano 1, 77733 Puerto Aventuras, Q.R.</p>
+              <p>📱 WhatsApp: <a href="https://wa.me/529841328770" className="underline text-cyan-400 hover:text-cyan-300" target="_blank" rel="noopener noreferrer">+52 984 132 8770</a></p>
               <p className="text-pink-400 font-semibold animate-pulse">
                 🎉 Limited spots available – don’t miss it!
               </p>
@@ -43,10 +43,10 @@ const VeoSpeaksSection = () => {
             <>
               <p>🎓 ¡Este verano tus hijos pueden aprender IA, construir apps y crear chatbots!</p>
               <p>🚀 Inscríbelos en nuestro <span className="text-purple-400 font-semibold">Campamento de Verano de Inteligencia Artificial</span>.</p>
-              <p>🕘 <strong>Horario libre:</strong> de 9 AM a 6 PM – ¡ven cuando quieras!</p>
+              <p>🕘 <strong>Horario libre:</strong> de 10 AM a 6 PM – ¡ven cuando quieras!</p>
               <p>💡 Compra paquetes de horas y úsalas como quieras.</p>
-              <p>📍 Puerto Aventuras</p>
-              <p>📱 WhatsApp: +52 984 132 8770</p>
+              <p>📍 Puerto Aventuras Plaza Condominio Gourmet, Calle Punta Celis Manzana 24 Lote 1, Plano 1, 77733 Puerto Aventuras, Q.R.</p>
+              <p>📱 WhatsApp: <a href="https://wa.me/529841328770" className="underline text-cyan-400 hover:text-cyan-300" target="_blank" rel="noopener noreferrer">+52 984 132 8770</a></p>
               <p className="text-pink-400 font-semibold animate-pulse">
                 🎉 ¡Cupos limitados, no te lo pierdas!
               </p>
@@ -56,18 +56,18 @@ const VeoSpeaksSection = () => {
 
         {/* Video */}
         <div className="w-full max-w-6xl aspect-video rounded-xl overflow-hidden shadow-2xl animate-fade-in">
-  <video
-    className="w-full h-full object-cover"
-    autoPlay
-    muted
-    loop
-    playsInline
-    controls
-  >
-    <source src="/videos/summer-camp.mp4" type="video/mp4" />
-    Your browser does not support the video tag.
-  </video>
-</div>
+          <video
+            className="w-full h-full object-cover"
+            autoPlay
+            muted
+            loop
+            playsInline
+            controls
+          >
+            <source src="/videos/summer-camp.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
 
       </div>
     </section>

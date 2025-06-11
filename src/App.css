@@ -36,3 +36,96 @@
     transform: rotate(360deg);
   }
 }
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes ping-slow {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 0.2;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.animate-ping-slow {
+  animation: ping-slow 3s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.buy-icon {
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.buy-icon:hover {
+  transform: scale(1.1);
+  color: #a78bfa;
+}
+
+@keyframes glow-spin {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+.card-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: inline-block;
+  transform: translate(-50%, -50%);
+  animation: glow-spin 6s linear infinite;
+}
+
+.card-glow div {
+  height: 5rem;
+  width: 5rem;
+  opacity: 0.8;
+  background: radial-gradient(#CBACF9 40%, transparent 60%);
+}
+
+/* 🌀 Light spinning around the card */
+@keyframes border-glow {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.card-glow-border::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  z-index: 0;
+  border-radius: 1.75rem;
+  background: conic-gradient(
+    from 0deg,
+    #CBACF9,
+    transparent 30%,
+    #CBACF9,
+    transparent 60%,
+    #CBACF9
+  );
+  filter: blur(10px);
+  animation: border-glow 4s linear infinite;
+  pointer-events: none;
+}
