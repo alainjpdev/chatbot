@@ -1,5 +1,7 @@
+// components/ui/dialog.jsx
+
 export function Dialog({ children }) {
-    return <>{children}</>;
+    return <div>{children}</div>; // Antes era <>{children}</>
   }
   
   export function DialogTrigger({ children }) {

@@ -1,4 +1,5 @@
 import React from "react";
+import { useLanguage } from "../contexts/LanguageContext";
 
 const countryOptions = [
   { label: "🇺🇸 United States (+1)", code: "+1" },
@@ -15,11 +16,17 @@ const countryOptions = [
 ];
 
 const PhoneInput = ({ countryCode, setCountryCode, phone, setPhone, customCode, setCustomCode }) => {
+  const { language } = useLanguage();
   const isOther = countryCode === "other";
+
+  const t = {
+    label: language === "es" ? "Número de teléfono" : "Phone Number",
+    placeholder: language === "es" ? "1234567890" : "1234567890",
+  };
 
   return (
     <div className="mb-4">
-      <label className="block text-sm mb-1 text-gray-300">Phone Number</label>
+      <label className="block text-sm mb-1 text-gray-300">{t.label}</label>
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
         <div className="flex gap-2 w-full sm:w-auto">
           <select
@@ -48,7 +55,7 @@ const PhoneInput = ({ countryCode, setCountryCode, phone, setPhone, customCode, 
           type="tel"
           value={phone}
           onChange={(e) => setPhone(e.target.value)}
-          placeholder="1234567890"
+          placeholder={t.placeholder}
           className="flex-1 bg-zinc-800 border border-white/20 text-white rounded p-2"
         />
       </div>

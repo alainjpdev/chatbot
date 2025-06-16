@@ -10,26 +10,31 @@ export const packages = [
     {
       hours: 4,
       price: 2000,
-      url: 'https://buy.stripe.com/28E3cv6GZfDX90J2AqeUU01',
+      url: 'https://buy.stripe.com/8x25kE96sdg537CdFefw400',
     },
     {
       hours: 8,
       price: 3890,
-      url: 'https://buy.stripe.com/00w6oH4yR77rccVcb0eUU02',
+      url: 'https://buy.stripe.com/5kQ3cweqM6RHeQkfNmfw401',
     },
     {
       hours: 12,
       price: 5200,
-      url: 'https://buy.stripe.com/fZu5kD0iB1N7ccVgrgeUU03',
+      url: 'https://buy.stripe.com/fZu9AUfuQ8ZP37Cbx6fw402',
     },
     {
       hours: 16,
       price: 7000,
-      url: 'https://buy.stripe.com/4gM4gzc1j3Vf4KtfnceUU04',
+      url: 'https://buy.stripe.com/6oU9AU4Qc6RHgYscBafw403',
     },
     {
       hours: 20,
       price: 8800,
-      url: 'https://buy.stripe.com/dRm9AT1mF63ngtb0sieUU05',
+      url: 'https://buy.stripe.com/9B6cN6fuQfod5fKfNmfw404',
+    },
+    {
+      hours: 60,
+      price: 19980,
+      url: "https://buy.stripe.com/dRm3cwaawb7XbE844Efw405",
     },
   ];

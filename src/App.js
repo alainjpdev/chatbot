@@ -1,29 +1,37 @@
-import React from 'react';
-import './index.css';
+import React, { useState } from 'react';
+import { useLanguage } from './contexts/LanguageContext';
+
 import Navbar from './components/Navbar';
 import HeroSection from './components/HeroSection';
 import VeoSpeaksSection from './components/VeoSpeaksSection';
-import SceneSection from './components/SceneSection';
 import PackagesSection from './components/UseCasesSection';
-import VeoModelsSection from './components/VeoModelsSection';
-import FAQSection from './components/FAQSection';
 import Footer from './components/Footer';
 import ChatBotButton from './components/ChatBotButton';
+import VapiModal from './components/VapiModal';
+import Testimonials from './components/Testimonials';
 
-function App() {
+export default function App() {
+  const { language } = useLanguage();
+  const [showVapi, setShowVapi] = useState(false);
+
   return (
-    <div className="App">
+    <>
       <Navbar />
-      <HeroSection />
-      <VeoSpeaksSection />
-      {/*<SceneSection />*/}
-      <PackagesSection />
-      {/*<VeoModelsSection />*/}
-      {/*<FAQSection />*/}
-      <ChatBotButton />
-      <Footer />
-    </div>
+      <HeroSection language={language} />
+      <VeoSpeaksSection language={language} />
+      <PackagesSection language={language} />
+      <Testimonials language={language} />
+      <ChatBotButton language={language} />
+      {showVapi && <VapiModal language={language} onClose={() => setShowVapi(false)} />}
+      <button
+        onClick={() => setShowVapi(true)}
+        className="fixed bottom-6 right-24 z-50 w-16 h-16 rounded-full bg-purple-700 shadow-xl flex items-center justify-center hover:scale-110 transition-transform border border-gray-800 text-white text-2xl"
+        aria-label="Open Vapi Assistant"
+      >
+        🗣️
+      </button>
+
+      <Footer language={language} />
+    </>
   );
 }
-
-export default App;
